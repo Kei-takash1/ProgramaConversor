@@ -27,7 +27,7 @@ public class Main {
 	private JFrame frmConversor;
 	private JTextField txt_primerValor;
 	private JTextField txt_segundoValor;
-	private boolean flag; //bandera para verificar que valores vamos a tomar con radiobotton
+	private boolean seleccionadorConversor; //Lo utilizamos como bandera para verificar que valores vamos a mostrar en el JComboBox, a traves de lo seleccionado en el JRadioBoton
 
 	/**
 	 * Launch the application.
@@ -56,7 +56,7 @@ public class Main {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		ButtonGroup grupo1 = new ButtonGroup(); //Inicializamos para definir el grupo del radio boton
+		ButtonGroup grupoRadioBoton = new ButtonGroup();
 		frmConversor = new JFrame();
 		frmConversor.setFont(new Font("Alef", Font.PLAIN, 24));
 		frmConversor.setTitle("Conversor de Moneda / Temperatura");
@@ -81,6 +81,7 @@ public class Main {
 		JComboBox combo_box= new JComboBox();
 		combo_box.setBounds(10, 24, 279, 22);
 		panel.add(combo_box);
+		combo_box.setVisible(true);
 		
 		
 		JLabel lbl_primerValor = new JLabel("");
@@ -116,16 +117,67 @@ public class Main {
 		JRadioButton jradio_temperatura = new JRadioButton("Conversor de Temperatura");
 		jradio_temperatura.setBounds(23, 64, 215, 23);
 		panel_1.add(jradio_temperatura);
+		jradio_temperatura.setSelected(false);		
+		//anexamos el boton al grupo
+		grupoRadioBoton.add(jradio_temperatura);
+		
+		
+		JRadioButton jradio_monedas = new JRadioButton("Conversor de Monedas");
+		jradio_monedas.setBounds(23, 22, 215, 23);
+		panel_1.add(jradio_monedas);
+		jradio_monedas.setSelected(false);
+		//anexamos el boton al grupo
+		grupoRadioBoton.add(jradio_monedas);
+		
+		JLabel lbl_image_alura = new JLabel("");
+		lbl_image_alura.setIcon(new ImageIcon(Main.class.getResource("/com/images/alura.png")));
+		lbl_image_alura.setBounds(333, 137, 213, 85);
+		background.add(lbl_image_alura);
+		
+		
+		
+		
+		/*
+		 * Agregamos los eventos para los JRadioBoton dependendiendo 
+		 * de lo seleccionado se mostrara la informacion en el JComboBox
+		 */
+		
+		jradio_monedas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				combo_box.removeAllItems();
+				combo_box.addItem("Convertir Pesos Mexicanos / Dolar");
+				combo_box.addItem("Convertir Pesos Mexicanos / Euro");
+				combo_box.addItem("Convertir Pesos Mexicanos / Libras Esterlinas");
+				combo_box.addItem("Convertir Pesos Mexicanos / Yen Japones");
+				combo_box.addItem("Convertir Pesos Mexicanos / Won sul-coreano");
+				
+				lbl_primerValor.setText("Peso Mexicano"); lbl_segundoValor.setText("Dolar"); //Ponemos los valores "predefinidos"
+				
+				//definios la bandera en verdadero para decir que usaremos la conversion de monedas
+				seleccionadorConversor = true;
+				
+				//habilitamos las cajas de texto para escribir los valores
+				txt_primerValor.setEditable(true); txt_primerValor.setText(0 + "");
+				txt_segundoValor.setEditable(true); txt_segundoValor.setText(0 + "");
+				
+			}
+		});
+		
+		
 		jradio_temperatura.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				combo_box.removeAllItems();
-				combo_box.addItem("Celsius / Fahrenheit"); combo_box.addItem("Celcius / Kelvin"); combo_box.addItem("Fahrenheit / Kelvin");
+				combo_box.addItem("Celsius / Fahrenheit");
+				combo_box.addItem("Celcius / Kelvin");
+				combo_box.addItem("Fahrenheit / Kelvin");
 				lbl_primerValor.setText(""); lbl_segundoValor.setText("");
-				lbl_primerValor.setText("Celcius"); lbl_segundoValor.setText("Fahrenheit"); //seteamos los valores "predefinidos"
+				
+				lbl_primerValor.setText("Celcius"); lbl_segundoValor.setText("Fahrenheit"); //Ponemos los valores "predefinidos"
 				
 				//definios la bandera en falso para decir que usaremos la conversion temperatura
-				flag = false;
+				seleccionadorConversor = false;
 				
 				//habilitamos las cajas de texto para escribir los valores
 				txt_primerValor.setEditable(true); txt_primerValor.setText(0 + "");
@@ -133,116 +185,19 @@ public class Main {
 			
 			}
 		});
-		jradio_temperatura.setSelected(false);
 		
 		
-		//anexamos los botones al grupo
-		grupo1.add(jradio_temperatura);
 		
-		
-		JRadioButton jradio_monedas = new JRadioButton("Conversor de Monedas");
-		jradio_monedas.setBounds(23, 22, 215, 23);
-		panel_1.add(jradio_monedas);
-		jradio_monedas.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				combo_box.removeAllItems();
-				combo_box.addItem("Convertir Pesos Mexicanos / Dolar"); combo_box.addItem("Convertir Pesos Mexicanos / Euro");
-				combo_box.addItem("Convertir Pesos Mexicanos / Libras Esterlinas"); combo_box.addItem("Convertir Pesos Mexicanos / Yen Japones");
-				combo_box.addItem("Convertir Pesos Mexicanos / Won sul-coreano");
-				lbl_primerValor.setText("Peso Mexicano"); lbl_segundoValor.setText("Dolar"); //seteamos los valores "predefinidos"
-				
-				//definios la bandera en verdadero para decir que usaremos la conversion de monedas
-				flag = true;
-				
-				//habilitamos las cajas de texto para escribir los valores
-				txt_primerValor.setEditable(true); txt_primerValor.setText(0 + "");
-				txt_segundoValor.setEditable(true); txt_segundoValor.setText(0 + "");
-				
-			}
-		});
-		jradio_monedas.setSelected(false);
-		grupo1.add(jradio_monedas);
-		
-		JLabel lbl_image_alura = new JLabel("");
-		lbl_image_alura.setIcon(new ImageIcon(Main.class.getResource("/com/images/alura.png")));
-		lbl_image_alura.setBounds(333, 137, 213, 85);
-		background.add(lbl_image_alura);
-		
-		txt_segundoValor.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				int key = e.getKeyChar();
-
-			    boolean numeros = key >= 48 && key <= 57;
-			        
-			    if (!numeros)
-			        e.consume();
-
-			    if (txt_segundoValor.getText().trim().length() == 5)
-			        e.consume();
-			}
-		});
-		
-		txt_segundoValor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Conversor conversor = new Conversor();
-				double valor;
-				if(flag) {
-					valor = conversor.convertidorMoneda(false, 0.0, Double.parseDouble(txt_segundoValor.getText()), combo_box.getSelectedIndex());
-					txt_primerValor.setText(valor + "");
-					
-				}
-				else {
-					valor = conversor.convertidorTemperatura(false, 0.0, Double.parseDouble(txt_segundoValor.getText()), combo_box.getSelectedIndex());
-					txt_primerValor.setText(valor + "");
-				}
-				
-			}
-		});
-		
-		//
-		//Validamos que los campos solo se puedan recibir numeros
-		//
-		txt_primerValor.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				int key = e.getKeyChar();
-
-			    boolean numeros = key >= 48 && key <= 57;
-			        
-			    if (!numeros)
-			        e.consume();
-
-			    if (txt_primerValor.getText().trim().length() == 5)
-			        e.consume();
-			}
-		});
-		
-		//
-		// Llamamos a los metodos para convertir moneda o temperatura, segun sea el caso
-		//
-		txt_primerValor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Conversor conversor = new Conversor();
-				double valor;
-				if(flag) {
-					valor = conversor.convertidorMoneda(true, Double.parseDouble(txt_primerValor.getText()), 0.0, combo_box.getSelectedIndex());
-					txt_segundoValor.setText(valor + "");
-					
-				}
-				else {
-					valor = conversor.convertidorTemperatura(true, Double.parseDouble(txt_primerValor.getText()), 0.0, combo_box.getSelectedIndex());
-					txt_segundoValor.setText(valor + "");
-				}
-			}
-		});
-		combo_box.setVisible(true);
-		
-		//evento para la combobox
+		/*
+		 * Una vez seleccionado lo que vamos a convertir del JRadioBoton.
+		 * 
+		 * Mostramos en los labels la informacion que contendra los TextField dependiendo del JComboBox.
+		 * 
+		 * El primer label, va por defecto en Peso Mexicanos para la conversion de moneda.
+		 */
 		combo_box.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(flag) {
+				if(seleccionadorConversor) {
 					switch (combo_box.getSelectedIndex()) {
 					case 0: {
 						lbl_segundoValor.setText("Dolar");
@@ -290,6 +245,87 @@ public class Main {
 					}
 					
 				}
+			}
+		});
+		
+		
+		
+		
+		/*
+		 * 
+		 * Validamos que los campos solo se puedan recibir numeros en el primer campo
+		 * 
+		 */
+		txt_primerValor.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				int key = e.getKeyChar();
+
+			    boolean numeros = key >= 48 && key <= 57;
+			        
+			    if (!numeros)
+			        e.consume();
+
+			    if (txt_primerValor.getText().trim().length() == 5)
+			        e.consume();
+			}
+		});
+		
+		txt_segundoValor.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				int key = e.getKeyChar();
+
+			    boolean numeros = key >= 48 && key <= 57;
+			        
+			    if (!numeros)
+			        e.consume();
+
+			    if (txt_segundoValor.getText().trim().length() == 5)
+			        e.consume();
+			}
+		});
+		
+		
+		
+		/*
+		 * Mandamos a llamar la clase Conversor para que haga la accion a proceder dependiendo de lo que se esta solicitando, ya sea conversor de Temperatura/Moneda
+		 * 
+		 *  Pasamos como dato el valor de la lista del JComboBox para decir que operación va a realizar. Ej: Peso a Dolar, Celsius a Kelvin.
+		 *  
+		 *  Y llamamos al Listener o ejecutor en ambos TextField para hacer un cambio de la conversion. Positivo para monedas. Negativo para temperatura.
+		 */
+		
+		txt_primerValor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Conversor conversor = new Conversor();
+				double valorObtenido;
+				if(seleccionadorConversor) {
+					valorObtenido = conversor.convertidorMoneda(true, Double.parseDouble(txt_primerValor.getText()), 0.0, combo_box.getSelectedItem().toString());
+					txt_segundoValor.setText(valorObtenido + "");
+					
+				}
+				else {
+					valorObtenido = conversor.convertidorTemperatura(true, Double.parseDouble(txt_primerValor.getText()), 0.0, combo_box.getSelectedItem().toString());
+					txt_segundoValor.setText(valorObtenido + "");
+				}
+			}
+		});
+		
+		txt_segundoValor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Conversor conversor = new Conversor();
+				double valorObtenido;
+				if(seleccionadorConversor) {
+					valorObtenido = conversor.convertidorMoneda(false, 0.0, Double.parseDouble(txt_segundoValor.getText()), combo_box.getSelectedItem().toString());
+					txt_primerValor.setText(valorObtenido + "");
+					
+				}
+				else {
+					valorObtenido = conversor.convertidorTemperatura(false, 0.0, Double.parseDouble(txt_segundoValor.getText()), combo_box.getSelectedItem().toString());
+					txt_primerValor.setText(valorObtenido + "");
+				}
+				
 			}
 		});
 	}

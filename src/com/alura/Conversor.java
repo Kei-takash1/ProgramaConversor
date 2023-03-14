@@ -10,32 +10,32 @@ public class Conversor {
 	
 	
 	
-	public double convertidorMoneda(boolean factor, double valor1, double valor2, int lista) {
-		switch (lista) {
-		case 0: {
-			if(factor) //nos indica si el valor devuelto va ser inverso o no
+	public double convertidorMoneda(boolean cambioConversion, double valor1, double valor2, String operacion) {
+		switch (operacion) {
+		case "Convertir Pesos Mexicanos / Dolar": {
+			if(cambioConversion) 
 				return Math.round((valor1 * this.dolar) * 100) / 100d;
 			return Math.round((valor2 / this.dolar)* 100) / 100d;
 		}
-		case 1:{
-			if(factor) //nos indica si el valor devuelto va ser inverso o no
+		case "Convertir Pesos Mexicanos / Euro":{
+			if(cambioConversion) 
 				return Math.round((valor1 * this.euro)* 100) / 100d;
 			return Math.round((valor2 / this.euro)* 100) / 100d;
 		}
-		case 2:{
-			if(factor) //nos indica si el valor devuelto va ser inverso o no
+		case "Convertir Pesos Mexicanos / Libras Esterlinas":{
+			if(cambioConversion) 
 				return Math.round((valor1 * this.libraEsterlina)* 100) / 100d;
 			return Math.round((valor2 / this.libraEsterlina)* 100) / 100d;	
 		}
 		
-		case 3:{
-			if(factor) //nos indica si el valor devuelto va ser inverso o no
+		case "Convertir Pesos Mexicanos / Yen Japones":{
+			if(cambioConversion) 
 				return Math.round((valor1 * this.yenJapones)* 100) / 100d;
 			return Math.round((valor2 / this.yenJapones)* 100) / 100d;			
 		}
 
-		case 4:{
-			if(factor) //nos indica si el valor devuelto va ser inverso o no
+		case "Convertir Pesos Mexicanos / Won sul-coreano":{
+			if(cambioConversion) 
 				return Math.round((valor1 * this.wonCoreano)* 100) / 100d;
 			return Math.round((valor2 / this.wonCoreano)* 100) / 100d;
 		}
@@ -45,20 +45,20 @@ public class Conversor {
 		}	
 	}
 	
-	public double convertidorTemperatura(boolean factor, double valor1, double valor2, int lista) {
-		switch (lista) {
-		case 0: {
-			if(factor)
+	public double convertidorTemperatura(boolean cambioConversion, double valor1, double valor2, String operacion) {
+		switch (operacion) {
+		case "Celsius / Fahrenheit": {
+			if(cambioConversion)
 				return Math.round(((valor1 * 1.8) + 32)* 100) / 100d;
 			return Math.round(((valor2 - 32) / 1.8)* 100) / 100d;
 		}
-		case 1: {
-			if(factor)
+		case "Celcius / Kelvin": {
+			if(cambioConversion)
 				return Math.round(((valor1 + 273.15))* 100) / 100d;
 			return Math.round(((valor2 - 273.15))* 100) / 100d;
 		}
-		case 2: {
-			if(factor)
+		case "Fahrenheit / Kelvin": {
+			if(cambioConversion)
 				return Math.round((((valor1 - 32) * 5/9) + 273.15) * 100) / 100d;
 			return Math.round((((valor2 - 273.15) * 9/5) + 32) * 100) / 100d;
 		}
